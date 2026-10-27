@@ -85,6 +85,12 @@
             transition: all 0.3s ease;
         }
 
+        /* Ensure input text is clearly visible in black */
+        .input-dark-text {
+            color: #000000 !important;
+            background-color: #f8fafc !important;
+        }
+
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -205,7 +211,7 @@
                             <i class="fa-solid fa-sparkles"></i> الدفعة الجديدة - 2026/2025
                         </span>
                         <h1 class="text-3xl md:text-5xl font-black leading-tight text-white">
-                            رحلتك للتفوق والدرجة النهائة في <span class="bg-clip-text text-transparent bg-gradient-to-r from-bio-400 to-cyanbio-500 glow-text">أحياء الثانوية العامة</span>
+                            رحلتك للتفوق والدرجة النهائية في <span class="bg-clip-text text-transparent bg-gradient-to-r from-bio-400 via-emerald-200 to-cyanbio-500 glow-text">أحياء الثانوية العامة</span>
                         </h1>
                         <p class="text-gray-300 text-base md:text-lg leading-relaxed font-semibold">
                             منصة تعليمية متكاملة تشمل شرح مبسط لكل أبواب المنهج، بنك أسئلة متطور يقيس مخرجات التعلم، واختبارات تفاعلية بتصحيح فوري وشرح للحلول.
@@ -300,7 +306,7 @@
                         </div>
                         <span class="text-xs font-bold text-teal-300 bg-bio-950/80 px-2.5 py-1 rounded-md border border-bio-800">الباب الرابع</span>
                         <h3 class="text-lg font-bold text-white mt-2 group-hover:text-teal-300 transition">البيولوجيا الجزئية DNA</h3>
-                        <p class="text-xs text-gray-400 mt-2 leading-relaxed">تركيب الحمض النووي DNA، أضاعفه، إصلاح عيوب DNA، وتخليق البروتين و RNA.</p>
+                        <p class="text-xs text-gray-400 mt-2 leading-relaxed">تركيب الحمض النووي DNA، تضاعفه، إصلاح عيوب DNA، وتخليق البروتين و RNA.</p>
                     </div>
                 </div>
             </div>
@@ -559,17 +565,17 @@
             <form id="authForm" onsubmit="handleAuthSubmit(event)" class="space-y-4">
                 <div id="nameFieldGroup" class="hidden space-y-1">
                     <label class="text-xs font-bold text-gray-300">الاسم بالكامل</label>
-                    <input type="text" id="authNameInput" placeholder="أحمد محمد" class="w-full bg-bio-950/80 border border-bio-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-bio-500">
+                    <input type="text" id="authNameInput" placeholder="أحمد محمد" class="input-dark-text w-full border border-bio-800 rounded-xl px-4 py-2.5 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-bio-500">
                 </div>
 
                 <div class="space-y-1">
                     <label class="text-xs font-bold text-gray-300">اسم المستخدم أو البريد الإلكتروني</label>
-                    <input type="text" id="authUsernameInput" required placeholder="student123" class="w-full bg-bio-950/80 border border-bio-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-bio-500">
+                    <input type="text" id="authUsernameInput" required placeholder="student123" class="input-dark-text w-full border border-bio-800 rounded-xl px-4 py-2.5 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-bio-500">
                 </div>
 
                 <div class="space-y-1">
                     <label class="text-xs font-bold text-gray-300">كلمة السر</label>
-                    <input type="password" id="authPasswordInput" required placeholder="••••••••" class="w-full bg-bio-950/80 border border-bio-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-bio-500">
+                    <input type="password" id="authPasswordInput" required placeholder="••••••••" class="input-dark-text w-full border border-bio-800 rounded-xl px-4 py-2.5 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-bio-500">
                 </div>
 
                 <div id="authAlert" class="hidden text-xs text-rose-400 bg-rose-950/40 border border-rose-800/40 p-2.5 rounded-xl text-center"></div>
@@ -615,14 +621,14 @@
 
     <!-- JAVASCRIPT APP LOGIC -->
     <script>
-        // Exact YouTube Links Provided By User
+        // Ordered YouTube Lectures Sequenced by Curriculum Lessons
         const LECTURES_DATA = [
             {
                 id: 'lec1',
                 chapterId: 'ch1',
                 chapterTitle: 'الباب الأول: الدعامة والحركة',
-                title: '1. محاضرة الدعامة والحركة',
-                description: 'شرح وتطبيق شامل بأسلوب حديث ومبسط.',
+                title: 'الدرس 1: الدعامة في الكائنات الحية',
+                description: 'شرح وتطبيق شامل بأسلوب حديث ومبسط على الدعامة الفسيولوجية والتركيبية.',
                 duration: '45 دقيقة',
                 youtubeId: 'mPXcEJz8yko'
             },
@@ -630,8 +636,8 @@
                 id: 'lec2',
                 chapterId: 'ch1',
                 chapterTitle: 'الباب الأول: الدعامة والحركة',
-                title: '2. تفاصيل الهيكل العظمي والمفاصل',
-                description: 'مكونات الهيكل العظمي والمفاصل والأوتار.',
+                title: 'الدرس 2: الحركة في الكائنات الحية والهيكل العظمي',
+                description: 'مكونات الهيكل العظمي والمفاصل والأوتار والانقباض العضلي.',
                 duration: '50 دقيقة',
                 youtubeId: '-eGHX2qzq6Q'
             },
@@ -639,8 +645,8 @@
                 id: 'lec3',
                 chapterId: 'ch2',
                 chapterTitle: 'الباب الثاني: التنسيق الهرموني',
-                title: '1. الغدة النخامية والغدد الصماء',
-                description: 'شرح هرمونات الفص الأوسط والغدة النخامية وتأثيرها.',
+                title: 'الدرس 3: مقدمة الهرمونات والغدة النخامية',
+                description: 'شرح هرمونات الفص الأوسط والغدة النخامية والتأثيرات الفسيولوجية.',
                 duration: '40 دقيقة',
                 youtubeId: 'Dr6bLu6u1mA'
             },
@@ -648,8 +654,8 @@
                 id: 'lec4',
                 chapterId: 'ch2',
                 chapterTitle: 'الباب الثاني: التنسيق الهرموني',
-                title: '2. هرمونات البنكرياس والغدة الكظرية',
-                description: 'الأنسولين والجلوكاجون وهرمونات الطوارئ.',
+                title: 'الدرس 4: هرمونات البنكرياس والغدة الكظرية',
+                description: 'الأنسولين والجلوكاجون وهرمونات الطوارئ والاستجابة للضغط العصبي.',
                 duration: '35 دقيقة',
                 youtubeId: 'w3AQ7EPOnho'
             },
@@ -657,8 +663,8 @@
                 id: 'lec5',
                 chapterId: 'ch3',
                 chapterTitle: 'الباب الثالث: التكاثر',
-                title: '1. التكاثر اللاجنسي وتعاقب الأجيال',
-                description: 'شرح آليات التكاثر المتنوعة ودورات الحياة.',
+                title: 'الدرس 5: التكاثر اللاجنسي وتعاقب الأجيال',
+                description: 'شرح آليات التكاثر المتنوعة ودورات الحياة في الكائنات الحية.',
                 duration: '55 دقيقة',
                 youtubeId: 'MrHN5Lr2PYM'
             }
@@ -866,24 +872,19 @@
             e.preventDefault();
             const username = document.getElementById('authUsernameInput').value.trim();
             const password = document.getElementById('authPasswordInput').value.trim();
-            const alertBox = document.getElementById('authAlert');
 
             if (!username || !password) return;
 
             if (authMode === 'register') {
                 const name = document.getElementById('authNameInput').value.trim();
-                const newUser = { name: name || username, username, password };
-                currentUser = newUser;
-                localStorage.setItem('bioUser', JSON.stringify(currentUser));
-                updateUserUI();
-                closeAuthModal();
+                currentUser = { name: name || username, username, password };
             } else {
-                // Quick Login
                 currentUser = { name: username, username, password };
-                localStorage.setItem('bioUser', JSON.stringify(currentUser));
-                updateUserUI();
-                closeAuthModal();
             }
+            
+            localStorage.setItem('bioUser', JSON.stringify(currentUser));
+            updateUserUI();
+            closeAuthModal();
         }
 
         function logout() {
