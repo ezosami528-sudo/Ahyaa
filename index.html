@@ -1,0 +1,1076 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة أحيائي | للثانوية العامة</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts Cairo -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bio: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            400: '#4ade80',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                            dark: '#0b1912'
+                        },
+                        cyanbio: {
+                            500: '#06b6d4',
+                            600: '#0891b2',
+                            800: '#155e75'
+                        }
+                    },
+                    fontFamily: {
+                        cairo: ['Cairo', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #09130e 0%, #0d2218 50%, #06181b 100%);
+            background-attachment: fixed;
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+
+        .glass-card {
+            background: rgba(18, 38, 28, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .glass-nav {
+            background: rgba(10, 24, 17, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-modal {
+            background: rgba(12, 28, 20, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(74, 222, 128, 0.3);
+        }
+
+        .glow-text {
+            text-shadow: 0 0 15px rgba(34, 197, 94, 0.5);
+        }
+
+        .glow-box {
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.2);
+        }
+
+        .glow-box-hover:hover {
+            box-shadow: 0 0 25px rgba(34, 197, 94, 0.4);
+            transform: translateY(-2px);
+            transition: all 0.3s ease;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b1912;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #166534;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #22c55e;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <!-- Navbar Header -->
+    <nav class="glass-nav sticky top-0 z-50 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <div class="flex items-center gap-3 cursor-pointer" onclick="switchTab('home')">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-bio-600 to-cyanbio-500 flex items-center justify-center text-white font-black text-2xl shadow-lg shadow-bio-500/30">
+                        <i class="fa-solid fa-dna animate-pulse"></i>
+                    </div>
+                    <div>
+                        <span class="text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-bio-400 via-emerald-200 to-cyanbio-500">
+                            أحـيـائـي
+                        </span>
+                        <span class="block text-xs text-bio-400/80 font-semibold">منصة الثانوية العامة</span>
+                    </div>
+                </div>
+
+                <!-- Desktop Nav Tabs -->
+                <div class="hidden md:flex items-center space-x-1 space-x-reverse">
+                    <button onclick="switchTab('home')" id="nav-home" class="nav-btn px-4 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 text-bio-400 bg-bio-900/40 border border-bio-500/30">
+                        <i class="fa-solid fa-house"></i> الرئيسة
+                    </button>
+                    <button onclick="switchTab('lectures')" id="nav-lectures" class="nav-btn px-4 py-2 rounded-xl text-sm font-bold text-gray-300 hover:text-white hover:bg-bio-800/30 transition flex items-center gap-2">
+                        <i class="fa-solid fa-circle-play"></i> قسم الشرح
+                    </button>
+                    <button onclick="switchTab('quizzes')" id="nav-quizzes" class="nav-btn px-4 py-2 rounded-xl text-sm font-bold text-gray-300 hover:text-white hover:bg-bio-800/30 transition flex items-center gap-2">
+                        <i class="fa-solid fa-pen-to-square"></i> قسم الحل والتدريب
+                    </button>
+                    <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-btn px-4 py-2 rounded-xl text-sm font-bold text-gray-300 hover:text-white hover:bg-bio-800/30 transition flex items-center gap-2">
+                        <i class="fa-solid fa-chart-line"></i> لوحة التحكم
+                    </button>
+                </div>
+
+                <!-- User Profile / Auth Area -->
+                <div class="hidden md:flex items-center gap-3">
+                    <div id="userLoggedArea" class="hidden items-center gap-3">
+                        <div class="flex items-center gap-2 bg-bio-900/60 border border-bio-700/50 px-3 py-1.5 rounded-xl">
+                            <i class="fa-solid fa-user-graduate text-bio-400"></i>
+                            <span id="userNameDisplay" class="text-sm font-bold text-emerald-100">طالب</span>
+                        </div>
+                        <button onclick="logout()" class="px-3 py-1.5 rounded-xl text-xs font-bold text-rose-400 hover:bg-rose-950/40 border border-rose-800/40 transition">
+                            <i class="fa-solid fa-right-from-bracket"></i> خروج
+                        </button>
+                    </div>
+                    <div id="userGuestArea" class="flex items-center gap-2">
+                        <button onclick="openAuthModal('login')" class="px-4 py-2 rounded-xl text-sm font-bold text-emerald-300 bg-bio-950/80 border border-bio-600/40 hover:bg-bio-800/50 transition">
+                            تسجيل الدخول
+                        </button>
+                        <button onclick="openAuthModal('register')" class="px-4 py-2 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-bio-600 to-bio-500 hover:from-bio-500 hover:to-bio-400 shadow-md transition">
+                            حساب جديد
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button onclick="toggleMobileMenu()" class="text-gray-300 hover:text-white p-2 rounded-lg bg-bio-900/50 border border-bio-700/30">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Drawer -->
+        <div id="mobileMenu" class="hidden md:hidden glass-card border-t border-bio-800/40 px-4 pt-2 pb-6 space-y-3">
+            <button onclick="switchTab('home'); toggleMobileMenu()" class="w-full text-right px-4 py-3 rounded-xl font-bold text-bio-400 bg-bio-900/40 flex items-center gap-3">
+                <i class="fa-solid fa-house"></i> الرئيسة
+            </button>
+            <button onclick="switchTab('lectures'); toggleMobileMenu()" class="w-full text-right px-4 py-3 rounded-xl font-bold text-gray-200 hover:bg-bio-900/30 flex items-center gap-3">
+                <i class="fa-solid fa-circle-play"></i> قسم الشرح والمذكرات
+            </button>
+            <button onclick="switchTab('quizzes'); toggleMobileMenu()" class="w-full text-right px-4 py-3 rounded-xl font-bold text-gray-200 hover:bg-bio-900/30 flex items-center gap-3">
+                <i class="fa-solid fa-pen-to-square"></i> بنك الأسئلة والتدريب
+            </button>
+            <button onclick="switchTab('dashboard'); toggleMobileMenu()" class="w-full text-right px-4 py-3 rounded-xl font-bold text-gray-200 hover:bg-bio-900/30 flex items-center gap-3">
+                <i class="fa-solid fa-chart-line"></i> إحصائيات الطالب
+            </button>
+            <div id="mobileAuthBtns" class="pt-3 border-t border-bio-800/50 flex flex-col gap-2">
+                <button onclick="openAuthModal('login'); toggleMobileMenu()" class="w-full py-2.5 rounded-xl text-center font-bold text-emerald-300 bg-bio-950 border border-bio-600/40">تسجيل الدخول</button>
+                <button onclick="openAuthModal('register'); toggleMobileMenu()" class="w-full py-2.5 rounded-xl text-center font-bold text-white bg-bio-600">إنشاء حساب جديد</button>
+            </div>
+            <div id="mobileLogoutBtn" class="hidden pt-3 border-t border-bio-800/50">
+                <button onclick="logout(); toggleMobileMenu()" class="w-full py-2.5 rounded-xl text-center font-bold text-rose-400 bg-rose-950/40 border border-rose-800/40">تسجيل الخروج</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- TAB 1: HOME PAGE -->
+        <section id="tab-home" class="tab-content space-y-12 animate-fade-in">
+            <!-- Hero Banner -->
+            <div class="glass-card rounded-3xl p-8 md:p-12 relative overflow-hidden border border-bio-500/20">
+                <div class="absolute -left-10 -bottom-10 w-72 h-72 bg-bio-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -right-10 -top-10 w-72 h-72 bg-cyanbio-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
+                    <div class="lg:col-span-7 space-y-6 text-center lg:text-right">
+                        <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-bio-500/10 text-bio-400 text-xs font-black border border-bio-500/30">
+                            <i class="fa-solid fa-sparkles"></i> الدفعة الجديدة - 2026/2025
+                        </span>
+                        <h1 class="text-3xl md:text-5xl font-black leading-tight text-white">
+                            رحلتك للتفوق والدرجة النهائة في <span class="bg-clip-text text-transparent bg-gradient-to-r from-bio-400 to-cyanbio-500 glow-text">أحياء الثانوية العامة</span>
+                        </h1>
+                        <p class="text-gray-300 text-base md:text-lg leading-relaxed font-semibold">
+                            منصة تعليمية متكاملة تشمل شرح مبسط لكل أبواب المنهج، بنك أسئلة متطور يقيس مخرجات التعلم، واختبارات تفاعلية بتصحيح فوري وشرح للحلول.
+                        </p>
+                        <div class="flex flex-wrap gap-4 justify-center lg:justify-start pt-2">
+                            <button onclick="switchTab('lectures')" class="px-6 py-3.5 rounded-2xl bg-gradient-to-r from-bio-600 to-bio-500 hover:from-bio-500 hover:to-bio-400 text-white font-bold shadow-lg shadow-bio-600/30 transition flex items-center gap-2">
+                                <i class="fa-solid fa-play"></i> ابدأ الشرح الآن
+                            </button>
+                            <button onclick="switchTab('quizzes')" class="px-6 py-3.5 rounded-2xl bg-bio-950/80 hover:bg-bio-900 text-bio-300 border border-bio-600/40 font-bold transition flex items-center gap-2">
+                                <i class="fa-solid fa-vial"></i> اختبر نفسك
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Visual Illustration -->
+                    <div class="lg:col-span-5 flex justify-center">
+                        <div class="relative w-full max-w-sm aspect-square glass-card rounded-2xl p-6 border border-bio-500/30 flex flex-col items-center justify-center text-center space-y-4 glow-box">
+                            <div class="w-24 h-24 rounded-full bg-bio-500/20 border border-bio-400/40 flex items-center justify-center text-bio-400 text-5xl">
+                                <i class="fa-solid fa-microscope animate-bounce"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-white">منهج حديث وتفاعلي</h3>
+                                <p class="text-xs text-gray-400 mt-1">دعامات، هرمونات، تكاثر، وبيولوجيا جزيئية DNA</p>
+                            </div>
+                            <div class="w-full bg-bio-950/60 p-3 rounded-xl border border-bio-800/40 flex justify-around text-center">
+                                <div>
+                                    <span class="block font-black text-bio-400 text-lg">4</span>
+                                    <span class="text-[10px] text-gray-400">أبواب رئيسية</span>
+                                </div>
+                                <div class="border-r border-bio-800"></div>
+                                <div>
+                                    <span class="block font-black text-cyanbio-500 text-lg">+100</span>
+                                    <span class="text-[10px] text-gray-400">سؤال تفاعلي</span>
+                                </div>
+                                <div class="border-r border-bio-800"></div>
+                                <div>
+                                    <span class="block font-black text-emerald-400 text-lg">100%</span>
+                                    <span class="text-[10px] text-gray-400">مجاني لزملاؤنا</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chapters Grid Overview -->
+            <div>
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h2 class="text-2xl font-black text-white flex items-center gap-2">
+                            <i class="fa-solid fa-book-bookmark text-bio-400"></i> أبواب المنهج الدراسية
+                        </h2>
+                        <p class="text-xs text-gray-400 mt-1">استكشف أبواب منهج أحياء الصف الثالث الثانوي</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Chapter 1 -->
+                    <div onclick="switchTab('lectures')" class="glass-card rounded-2xl p-6 border border-bio-800/50 glow-box-hover cursor-pointer group">
+                        <div class="w-12 h-12 rounded-xl bg-bio-500/20 text-bio-400 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition">
+                            <i class="fa-solid fa-bone"></i>
+                        </div>
+                        <span class="text-xs font-bold text-bio-400 bg-bio-950/80 px-2.5 py-1 rounded-md border border-bio-800">الباب الأول</span>
+                        <h3 class="text-lg font-bold text-white mt-2 group-hover:text-bio-400 transition">الدعامة والحركة</h3>
+                        <p class="text-xs text-gray-400 mt-2 leading-relaxed">الدعامة في النبات والحيوان، الهيكل العظمي، المفاصل، والمحاليق والانتحاء.</p>
+                    </div>
+
+                    <!-- Chapter 2 -->
+                    <div onclick="switchTab('lectures')" class="glass-card rounded-2xl p-6 border border-bio-800/50 glow-box-hover cursor-pointer group">
+                        <div class="w-12 h-12 rounded-xl bg-cyanbio-500/20 text-cyanbio-500 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition">
+                            <i class="fa-solid fa-vial-circle-check"></i>
+                        </div>
+                        <span class="text-xs font-bold text-cyanbio-500 bg-bio-950/80 px-2.5 py-1 rounded-md border border-bio-800">الباب الثاني</span>
+                        <h3 class="text-lg font-bold text-white mt-2 group-hover:text-cyanbio-500 transition">التنسيق الهرموني</h3>
+                        <p class="text-xs text-gray-400 mt-2 leading-relaxed">الغدة النخامية، الدرقية، الكظرية، البنكرياس، والغدد التناسلية وآلية عمل الهرمونات.</p>
+                    </div>
+
+                    <!-- Chapter 3 -->
+                    <div onclick="switchTab('lectures')" class="glass-card rounded-2xl p-6 border border-bio-800/50 glow-box-hover cursor-pointer group">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition">
+                            <i class="fa-solid fa-seedling"></i>
+                        </div>
+                        <span class="text-xs font-bold text-emerald-400 bg-bio-950/80 px-2.5 py-1 rounded-md border border-bio-800">الباب الثالث</span>
+                        <h3 class="text-lg font-bold text-white mt-2 group-hover:text-emerald-400 transition">التكاثر في الكائنات</h3>
+                        <p class="text-xs text-gray-400 mt-2 leading-relaxed">التكاثر اللاجنسي والجنسي، تعاقب الأجيال، والتكاثر في النباتات الزهرية والإنسان.</p>
+                    </div>
+
+                    <!-- Chapter 4 -->
+                    <div onclick="switchTab('lectures')" class="glass-card rounded-2xl p-6 border border-bio-800/50 glow-box-hover cursor-pointer group">
+                        <div class="w-12 h-12 rounded-xl bg-teal-500/20 text-teal-300 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition">
+                            <i class="fa-solid fa-dna"></i>
+                        </div>
+                        <span class="text-xs font-bold text-teal-300 bg-bio-950/80 px-2.5 py-1 rounded-md border border-bio-800">الباب الرابع</span>
+                        <h3 class="text-lg font-bold text-white mt-2 group-hover:text-teal-300 transition">البيولوجيا الجزئية DNA</h3>
+                        <p class="text-xs text-gray-400 mt-2 leading-relaxed">تركيب الحمض النووي DNA، أضاعفه، إصلاح عيوب DNA، وتخليق البروتين و RNA.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- TAB 2: LECTURES SECTION -->
+        <section id="tab-lectures" class="tab-content hidden space-y-8">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-bio-800/60 pb-6">
+                <div>
+                    <h2 class="text-3xl font-black text-white flex items-center gap-3">
+                        <i class="fa-solid fa-graduation-cap text-bio-400"></i> قسم الشرح والمذكرات
+                    </h2>
+                    <p class="text-sm text-gray-300 mt-1">اختر الباب المطلوب لمشاهدة شرح الفيديوهات وتحميل مذكرات PDF</p>
+                </div>
+                <!-- Chapter Filter -->
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="filterLectures('all')" class="chapter-filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-bio-500 text-white border border-bio-400 shadow">الكل</button>
+                    <button onclick="filterLectures('ch1')" class="chapter-filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-bio-950/80 text-gray-300 border border-bio-800 hover:border-bio-500">الدعامة والحركة</button>
+                    <button onclick="filterLectures('ch2')" class="chapter-filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-bio-950/80 text-gray-300 border border-bio-800 hover:border-bio-500">التنسيق الهرموني</button>
+                    <button onclick="filterLectures('ch3')" class="chapter-filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-bio-950/80 text-gray-300 border border-bio-800 hover:border-bio-500">التكاثر</button>
+                </div>
+            </div>
+
+            <!-- Lectures Cards Grid -->
+            <div id="lecturesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Loaded dynamically via JavaScript -->
+            </div>
+        </section>
+
+
+        <!-- TAB 3: QUIZZES & PRACTICE SECTION -->
+        <section id="tab-quizzes" class="tab-content hidden space-y-8">
+            <div class="border-b border-bio-800/60 pb-6">
+                <h2 class="text-3xl font-black text-white flex items-center gap-3">
+                    <i class="fa-solid fa-list-check text-bio-400"></i> قسم الحل والتدريب التفاعلي
+                </h2>
+                <p class="text-sm text-gray-300 mt-1">اختبر معلوماتك مع أسئلة النظام الجديد بتصحيح فوري وتوضيح الإجابة النموذجية</p>
+            </div>
+
+            <!-- Quiz Selection Screen -->
+            <div id="quizSelectContainer" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="glass-card rounded-2xl p-6 border border-bio-700/50 hover:border-bio-500 transition flex flex-col justify-between">
+                    <div>
+                        <span class="px-3 py-1 bg-bio-500/20 text-bio-400 text-xs font-bold rounded-lg">اختبار 1</span>
+                        <h3 class="text-xl font-bold text-white mt-3">اختبار الدعامة والحركة</h3>
+                        <p class="text-xs text-gray-400 mt-2">شامل أسئلة الدعامة في النبات، الهيكل العظمي، والانقباض العضلي.</p>
+                        <div class="mt-4 flex items-center gap-4 text-xs text-gray-300">
+                            <span><i class="fa-regular fa-clock text-bio-400"></i> 10 دقائق</span>
+                            <span><i class="fa-regular fa-circle-question text-bio-400"></i> 3 أسئلة</span>
+                        </div>
+                    </div>
+                    <button onclick="startQuiz('quiz_ch1')" class="mt-6 w-full py-3 rounded-xl bg-bio-600 hover:bg-bio-500 text-white font-bold transition flex justify-center items-center gap-2">
+                        <i class="fa-solid fa-play"></i> ابدأ الاختبار
+                    </button>
+                </div>
+
+                <div class="glass-card rounded-2xl p-6 border border-bio-700/50 hover:border-bio-500 transition flex flex-col justify-between">
+                    <div>
+                        <span class="px-3 py-1 bg-cyanbio-500/20 text-cyanbio-500 text-xs font-bold rounded-lg">اختبار 2</span>
+                        <h3 class="text-xl font-bold text-white mt-3">اختبار التنسيق الهرموني</h3>
+                        <p class="text-xs text-gray-400 mt-2">أسئلة الغدد الصماء والهرمونات وآليات الاتزان الداخلي.</p>
+                        <div class="mt-4 flex items-center gap-4 text-xs text-gray-300">
+                            <span><i class="fa-regular fa-clock text-cyanbio-500"></i> 10 دقائق</span>
+                            <span><i class="fa-regular fa-circle-question text-cyanbio-500"></i> 2 أسئلة</span>
+                        </div>
+                    </div>
+                    <button onclick="startQuiz('quiz_ch2')" class="mt-6 w-full py-3 rounded-xl bg-cyanbio-600 hover:bg-cyanbio-500 text-white font-bold transition flex justify-center items-center gap-2">
+                        <i class="fa-solid fa-play"></i> ابدأ الاختبار
+                    </button>
+                </div>
+
+                <div class="glass-card rounded-2xl p-6 border border-bio-700/50 hover:border-bio-500 transition flex flex-col justify-between">
+                    <div>
+                        <span class="px-3 py-1 bg-teal-500/20 text-teal-300 text-xs font-bold rounded-lg">اختبار 3</span>
+                        <h3 class="text-xl font-bold text-white mt-3">اختبار البيولوجيا الجزئية DNA</h3>
+                        <p class="text-xs text-gray-400 mt-2">تركيب DNA والتضاعف والطفرات وتخليق البروتينات.</p>
+                        <div class="mt-4 flex items-center gap-4 text-xs text-gray-300">
+                            <span><i class="fa-regular fa-clock text-teal-300"></i> 10 دقائق</span>
+                            <span><i class="fa-regular fa-circle-question text-teal-300"></i> 1 سؤال</span>
+                        </div>
+                    </div>
+                    <button onclick="startQuiz('quiz_ch3')" class="mt-6 w-full py-3 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-bold transition flex justify-center items-center gap-2">
+                        <i class="fa-solid fa-play"></i> ابدأ الاختبار
+                    </button>
+                </div>
+            </div>
+
+            <!-- Active Quiz Box Container -->
+            <div id="activeQuizBox" class="hidden glass-card rounded-3xl p-6 md:p-8 border border-bio-500/30 max-w-3xl mx-auto space-y-6">
+                <div class="flex justify-between items-center border-b border-bio-800/60 pb-4">
+                    <div>
+                        <h3 id="activeQuizTitle" class="text-xl font-bold text-white">عنوان الاختبار</h3>
+                        <span id="questionCounter" class="text-xs text-bio-400 font-semibold">السؤال 1 من 5</span>
+                    </div>
+                    <button onclick="exitQuiz()" class="px-3 py-1.5 rounded-lg bg-rose-950/60 text-rose-400 text-xs font-bold border border-rose-800/40">
+                        إنهاء الاختبار
+                    </button>
+                </div>
+
+                <div class="space-y-4">
+                    <p id="questionText" class="text-lg font-bold text-white leading-relaxed">نص السؤال هنا...</p>
+                    <div id="choicesContainer" class="space-y-3 pt-2"></div>
+                </div>
+
+                <div id="explanationBox" class="hidden p-4 rounded-xl bg-bio-950/90 border border-bio-500/40 text-sm space-y-1">
+                    <div class="font-bold text-bio-400 flex items-center gap-2">
+                        <i class="fa-solid fa-circle-info"></i> الشرح والتوضيح:
+                    </div>
+                    <p id="explanationText" class="text-gray-300 text-xs leading-relaxed"></p>
+                </div>
+
+                <div class="flex justify-between items-center pt-4 border-t border-bio-800/60">
+                    <button id="prevBtn" onclick="navigateQuestion(-1)" class="px-5 py-2.5 rounded-xl bg-bio-900 text-gray-300 font-bold text-xs hover:bg-bio-800 disabled:opacity-40">
+                        السابق
+                    </button>
+                    <button id="submitAnswerBtn" onclick="checkCurrentAnswer()" class="px-6 py-2.5 rounded-xl bg-bio-600 hover:bg-bio-500 text-white font-bold text-xs">
+                        تأكيد الإجابة
+                    </button>
+                    <button id="nextBtn" onclick="navigateQuestion(1)" class="px-5 py-2.5 rounded-xl bg-bio-900 text-gray-300 font-bold text-xs hover:bg-bio-800">
+                        التالي
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quiz Result Summary Card -->
+            <div id="quizResultBox" class="hidden glass-card rounded-3xl p-8 border border-bio-500/40 max-w-xl mx-auto text-center space-y-6">
+                <div class="w-20 h-20 rounded-full bg-bio-500/20 border border-bio-400/40 flex items-center justify-center text-bio-400 text-4xl mx-auto">
+                    <i class="fa-solid fa-trophy"></i>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-black text-white">نتيجة الاختبار</h3>
+                    <p class="text-xs text-gray-400 mt-1">عاش يا بطل! استمر في المحاولة للوصول إلى 100%</p>
+                </div>
+                <div class="p-6 bg-bio-950/70 rounded-2xl border border-bio-800 flex justify-around">
+                    <div>
+                        <span class="block text-xs text-gray-400">الدرجة</span>
+                        <span id="finalScore" class="text-3xl font-black text-bio-400">0 / 0</span>
+                    </div>
+                    <div class="border-r border-bio-800"></div>
+                    <div>
+                        <span class="block text-xs text-gray-400">النسبة المئوية</span>
+                        <span id="finalPercentage" class="text-3xl font-black text-cyanbio-500">0%</span>
+                    </div>
+                </div>
+                <button onclick="closeQuizResult()" class="w-full py-3 rounded-xl bg-bio-600 hover:bg-bio-500 text-white font-bold">
+                    العودة لإنشاء الاختبارات
+                </button>
+            </div>
+        </section>
+
+
+        <!-- TAB 4: DASHBOARD SECTION -->
+        <section id="tab-dashboard" class="tab-content hidden space-y-8">
+            <div class="border-b border-bio-800/60 pb-6">
+                <h2 class="text-3xl font-black text-white flex items-center gap-3">
+                    <i class="fa-solid fa-chart-line text-bio-400"></i> لوحة تحكم ومستوى الطالب
+                </h2>
+                <p class="text-sm text-gray-300 mt-1">تتبع درجاتك في الاختبارات ونسبة إنجاز المنهج</p>
+            </div>
+
+            <!-- Dashboard Stats Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="glass-card rounded-2xl p-6 border border-bio-800/50 flex items-center gap-4">
+                    <div class="w-14 h-14 rounded-xl bg-bio-500/20 text-bio-400 flex items-center justify-center text-2xl">
+                        <i class="fa-solid fa-file-pen"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs text-gray-400 block">الاختبارات المؤداة</span>
+                        <span id="statQuizzesTaken" class="text-2xl font-black text-white">0</span>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-2xl p-6 border border-bio-800/50 flex items-center gap-4">
+                    <div class="w-14 h-14 rounded-xl bg-cyanbio-500/20 text-cyanbio-500 flex items-center justify-center text-2xl">
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs text-gray-400 block">متوسط الدرجات</span>
+                        <span id="statAvgScore" class="text-2xl font-black text-white">0%</span>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-2xl p-6 border border-bio-800/50 flex items-center gap-4">
+                    <div class="w-14 h-14 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-2xl">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs text-gray-400 block">الدروس المكتملة</span>
+                        <span id="statLessonsDone" class="text-2xl font-black text-white">5 / 5</span>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-2xl p-6 border border-bio-800/50 flex items-center gap-4">
+                    <div class="w-14 h-14 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-2xl">
+                        <i class="fa-solid fa-fire"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs text-gray-400 block">سلسلة المذاكرة</span>
+                        <span class="text-2xl font-black text-white">3 أيام</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- History Table -->
+            <div class="glass-card rounded-2xl p-6 border border-bio-800/50">
+                <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-history text-bio-400"></i> سجل الاختبارات الأخيرة
+                </h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-right text-xs text-gray-300">
+                        <thead class="bg-bio-950/80 text-bio-400 uppercase font-bold">
+                            <tr>
+                                <th class="p-3.5 rounded-r-xl">اسم الاختبار</th>
+                                <th class="p-3.5">الدرجة</th>
+                                <th class="p-3.5">النسبة</th>
+                                <th class="p-3.5 rounded-l-xl">التاريخ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="quizHistoryTable">
+                            <tr>
+                                <td colspan="4" class="text-center p-6 text-gray-500">لا توجد اختبارات مسجلة بعد. ابدأ أداء الاختبارات لتتبع نتائجك!</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="glass-nav border-t border-bio-800/50 py-6 mt-12 text-center text-xs text-gray-400">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-3">
+            <p>منصة أحيائي التعليمية للصف الثالث الثانوي - صُممت لمساعدة طلاب الأحياء ✨</p>
+            <p class="text-bio-400 font-bold">بالتوفيق والنجاح لجميع الطلاب 💚</p>
+        </div>
+    </footer>
+
+
+    <!-- MODALS: AUTH & VIDEO PLAYER -->
+
+    <!-- Authentication Modal (Login / Register) -->
+    <div id="authModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/70 backdrop-blur-md">
+        <div class="glass-modal w-full max-w-md rounded-3xl p-8 space-y-6 relative border border-bio-500/30">
+            <button onclick="closeAuthModal()" type="button" class="absolute top-5 left-5 text-gray-400 hover:text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="text-center">
+                <h3 id="authModalTitle" class="text-2xl font-black text-white">تسجيل الدخول</h3>
+                <p id="authModalSub" class="text-xs text-gray-400 mt-1">مرحباً بك مجدداً في منصتك التعليمية</p>
+            </div>
+
+            <!-- Form -->
+            <form id="authForm" onsubmit="handleAuthSubmit(event)" class="space-y-4">
+                <div id="nameFieldGroup" class="hidden space-y-1">
+                    <label class="text-xs font-bold text-gray-300">الاسم بالكامل</label>
+                    <input type="text" id="authNameInput" placeholder="أحمد محمد" class="w-full bg-bio-950/80 border border-bio-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-bio-500">
+                </div>
+
+                <div class="space-y-1">
+                    <label class="text-xs font-bold text-gray-300">اسم المستخدم أو البريد الإلكتروني</label>
+                    <input type="text" id="authUsernameInput" required placeholder="student123" class="w-full bg-bio-950/80 border border-bio-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-bio-500">
+                </div>
+
+                <div class="space-y-1">
+                    <label class="text-xs font-bold text-gray-300">كلمة السر</label>
+                    <input type="password" id="authPasswordInput" required placeholder="••••••••" class="w-full bg-bio-950/80 border border-bio-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-bio-500">
+                </div>
+
+                <div id="authAlert" class="hidden text-xs text-rose-400 bg-rose-950/40 border border-rose-800/40 p-2.5 rounded-xl text-center"></div>
+
+                <button type="submit" id="authSubmitBtn" class="w-full py-3 rounded-xl bg-gradient-to-r from-bio-600 to-bio-500 hover:from-bio-500 hover:to-bio-400 text-white font-bold text-sm transition">
+                    تسجيل الدخول
+                </button>
+            </form>
+
+            <div class="text-center text-xs text-gray-400">
+                <span id="authToggleQuestion">ليس لديك حساب؟</span>
+                <button type="button" onclick="toggleAuthMode()" id="authToggleBtn" class="text-bio-400 font-bold underline mr-1">إنشاء حساب جديد</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Video Player Modal -->
+    <div id="videoModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+        <div class="glass-modal w-full max-w-3xl rounded-3xl p-6 space-y-4 relative border border-bio-500/30">
+            <div class="flex justify-between items-center border-b border-bio-800/60 pb-3">
+                <h3 id="videoModalTitle" class="text-lg font-bold text-white">مشاهدة الشرح</h3>
+                <button onclick="closeVideoModal()" class="text-gray-400 hover:text-white text-xl p-1 rounded-lg hover:bg-bio-900/50">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <div class="aspect-video w-full rounded-2xl overflow-hidden bg-black shadow-2xl relative">
+                <iframe id="videoIframe" class="w-full h-full" src="" title="Biology Lesson" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+
+            <div class="flex justify-between items-center pt-2">
+                <a id="externalVideoLink" href="#" target="_blank" class="text-xs text-bio-400 hover:underline flex items-center gap-1.5 font-bold">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> فتح الفيديو في يوتيوب مباشرة
+                </a>
+                <button onclick="closeVideoModal()" class="px-4 py-2 rounded-xl bg-bio-900 text-gray-300 font-bold text-xs hover:bg-bio-800 transition">
+                    إغلاق
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- JAVASCRIPT APP LOGIC -->
+    <script>
+        // Exact YouTube Links Provided By User
+        const LECTURES_DATA = [
+            {
+                id: 'lec1',
+                chapterId: 'ch1',
+                chapterTitle: 'الباب الأول: الدعامة والحركة',
+                title: '1. محاضرة الدعامة والحركة',
+                description: 'شرح وتطبيق شامل بأسلوب حديث ومبسط.',
+                duration: '45 دقيقة',
+                youtubeId: 'mPXcEJz8yko'
+            },
+            {
+                id: 'lec2',
+                chapterId: 'ch1',
+                chapterTitle: 'الباب الأول: الدعامة والحركة',
+                title: '2. تفاصيل الهيكل العظمي والمفاصل',
+                description: 'مكونات الهيكل العظمي والمفاصل والأوتار.',
+                duration: '50 دقيقة',
+                youtubeId: '-eGHX2qzq6Q'
+            },
+            {
+                id: 'lec3',
+                chapterId: 'ch2',
+                chapterTitle: 'الباب الثاني: التنسيق الهرموني',
+                title: '1. الغدة النخامية والغدد الصماء',
+                description: 'شرح هرمونات الفص الأوسط والغدة النخامية وتأثيرها.',
+                duration: '40 دقيقة',
+                youtubeId: 'Dr6bLu6u1mA'
+            },
+            {
+                id: 'lec4',
+                chapterId: 'ch2',
+                chapterTitle: 'الباب الثاني: التنسيق الهرموني',
+                title: '2. هرمونات البنكرياس والغدة الكظرية',
+                description: 'الأنسولين والجلوكاجون وهرمونات الطوارئ.',
+                duration: '35 دقيقة',
+                youtubeId: 'w3AQ7EPOnho'
+            },
+            {
+                id: 'lec5',
+                chapterId: 'ch3',
+                chapterTitle: 'الباب الثالث: التكاثر',
+                title: '1. التكاثر اللاجنسي وتعاقب الأجيال',
+                description: 'شرح آليات التكاثر المتنوعة ودورات الحياة.',
+                duration: '55 دقيقة',
+                youtubeId: 'MrHN5Lr2PYM'
+            }
+        ];
+
+        const QUIZZES_DATA = {
+            'quiz_ch1': {
+                title: 'اختبار الدعامة والحركة',
+                questions: [
+                    {
+                        question: 'أي مما يلي يعبر عن دعامة فيزيولوجية فقط في النبات؟',
+                        options: [
+                            'انتفاخ ثمار الفاكهة الضامرة عند وضعها في الماء',
+                            'ترسيب اللجنين على جدر الأوعية',
+                            'تغليظ خلايا اللحاء بالكيوتين',
+                            'ترسيب السوبرين في الخلايا الفلينية'
+                        ],
+                        correctIndex: 0,
+                        explanation: 'الدعامة الفيزيولوجية تعتمد على دخول الماء إلى الفجوة العصارى للخلية بالأسموزية فتنتفخ وتتوتر، وهي مؤقتة.'
+                    },
+                    {
+                        question: 'عدد العظام في الهيكل العظمي للإنسان البالغ هو:',
+                        options: ['206 عظمة', '208 عظمة', '300 عظمة', '120 عظمة'],
+                        correctIndex: 0,
+                        explanation: 'يتكون الهيكل العظمي للإنسان البالغ من 206 عظمة تتصل مع بعضها عن طريق المفاصل.'
+                    },
+                    {
+                        question: 'الوحدة التركيبية للعضلة الهيكلية هي:',
+                        options: ['الكتلة العضلية', 'الفيبرين', 'اليفية العضلية', 'الخلية (الليف العضلي)'],
+                        correctIndex: 3,
+                        explanation: 'الخلية العضلية أو الليفة العضلية هي الوحدة التركيبية للعضلة الهيكلية.'
+                    }
+                ]
+            },
+            'quiz_ch2': {
+                title: 'اختبار التنسيق الهرموني',
+                questions: [
+                    {
+                        question: 'ما الهرمون المسئول عن زيادة نسبة السكر في الدم عند الطوارئ؟',
+                        options: ['الأنسولين', 'الأدرينالين', 'البرولاكتين', 'الثايروكسين'],
+                        correctIndex: 1,
+                        explanation: 'يفرز الأدرينالين من نخاع الغدة الكظرية في حالات النجدة والخوف لرفع السكر بالدم.'
+                    },
+                    {
+                        question: 'تسمى الغدة النخامية بسيدة الغدد (المايسترو) لأنها:',
+                        options: [
+                            'تفرز أكبر قدر من الهرمونات',
+                            'تتحكم في إفراز معظم الغدد الصماء الأخرى',
+                            'توجد في الدماغ',
+                            'تتأثر بالجهاز العصبي فقط'
+                        ],
+                        correctIndex: 1,
+                        explanation: 'تفرز هرمونات منشطة لباقي الغدد مثل الغدة الدرقية والكظرية والمناسل.'
+                    }
+                ]
+            },
+            'quiz_ch3': {
+                title: 'اختبار البيولوجيا الجزئية DNA',
+                questions: [
+                    {
+                        question: 'يرتبط الشريط المزدوج لـ DNA بروابط:',
+                        options: ['هيدروجينية بين القواعد النيتروجينية', 'ببتيدية', 'تساهمية فقط', 'أيونية'],
+                        correctIndex: 0,
+                        explanation: 'ترتبط القواعد النيتروجينية المتكاملة (A=T و C≡G) بروابط هيدروجينية.'
+                    }
+                ]
+            }
+        };
+
+        // App State
+        let currentUser = JSON.parse(localStorage.getItem('bioUser')) || null;
+        let quizHistory = JSON.parse(localStorage.getItem('bioQuizHistory')) || [];
+        let authMode = 'login';
+        let currentQuiz = null;
+        let activeQuizState = {
+            quizId: null,
+            currentIndex: 0,
+            userAnswers: [],
+            isSubmitted: false
+        };
+
+        // App Initializer
+        window.onload = function() {
+            updateUserUI();
+            renderLectures('all');
+            renderHistoryTable();
+        };
+
+        // Navigation Tabs Handler
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            const target = document.getElementById(`tab-${tabId}`);
+            if (target) target.classList.remove('hidden');
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-bio-400', 'bg-bio-900/40', 'border', 'border-bio-500/30');
+                btn.classList.add('text-gray-300');
+            });
+
+            const activeNav = document.getElementById(`nav-${tabId}`);
+            if (activeNav) {
+                activeNav.classList.add('text-bio-400', 'bg-bio-900/40', 'border', 'border-bio-500/30');
+                activeNav.classList.remove('text-gray-300');
+            }
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Render Lectures List
+        function renderLectures(filter) {
+            const container = document.getElementById('lecturesGrid');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const filteredData = filter === 'all' 
+                ? LECTURES_DATA 
+                : LECTURES_DATA.filter(item => item.chapterId === filter);
+
+            filteredData.forEach(lec => {
+                const card = document.createElement('div');
+                card.className = "glass-card rounded-2xl p-6 border border-bio-800/50 flex flex-col justify-between glow-box-hover";
+                card.innerHTML = `
+                    <div>
+                        <span class="text-[10px] font-bold text-bio-400 bg-bio-950/80 px-2.5 py-1 rounded-md border border-bio-800">${lec.chapterTitle}</span>
+                        <h3 class="text-lg font-bold text-white mt-3">${lec.title}</h3>
+                        <p class="text-xs text-gray-400 mt-2 leading-relaxed">${lec.description}</p>
+                        <div class="mt-4 flex items-center gap-2 text-xs text-gray-300">
+                            <i class="fa-regular fa-clock text-bio-400"></i>
+                            <span>المدة: ${lec.duration}</span>
+                        </div>
+                    </div>
+                    <div class="mt-6 flex gap-2">
+                        <button onclick="playVideo('${lec.title}', '${lec.youtubeId}')" class="flex-1 py-2.5 rounded-xl bg-bio-600 hover:bg-bio-500 text-white font-bold text-xs transition flex justify-center items-center gap-2">
+                            <i class="fa-solid fa-play"></i> مشاهدة
+                        </button>
+                        <button onclick="downloadPdf('${lec.title}')" class="px-3 py-2.5 rounded-xl bg-bio-950 hover:bg-bio-900 text-bio-300 border border-bio-800 font-bold text-xs transition" title="تحميل المذكرة">
+                            <i class="fa-solid fa-download"></i>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function filterLectures(chapterKey) {
+            renderLectures(chapterKey);
+        }
+
+        // Video Player Modal Control
+        function playVideo(title, youtubeId) {
+            document.getElementById('videoModalTitle').innerText = title;
+            const embedUrl = `https://www.youtube.com/embed/${youtubeId}?autoplay=1`;
+            document.getElementById('videoIframe').src = embedUrl;
+            document.getElementById('externalVideoLink').href = `https://youtu.be/${youtubeId}`;
+            document.getElementById('videoModal').classList.remove('hidden');
+        }
+
+        function closeVideoModal() {
+            document.getElementById('videoIframe').src = '';
+            document.getElementById('videoModal').classList.add('hidden');
+        }
+
+        function downloadPdf(title) {
+            alert(`جاري تحميل مذكرة درس: ${title}`);
+        }
+
+        // Authentication System
+        function openAuthModal(mode) {
+            authMode = mode;
+            const nameGroup = document.getElementById('nameFieldGroup');
+            const modalTitle = document.getElementById('authModalTitle');
+            const submitBtn = document.getElementById('authSubmitBtn');
+            const toggleQ = document.getElementById('authToggleQuestion');
+            const toggleBtn = document.getElementById('authToggleBtn');
+
+            if (mode === 'register') {
+                nameGroup.classList.remove('hidden');
+                modalTitle.innerText = "حساب طالب جديد";
+                submitBtn.innerText = "إنشاء الحساب";
+                toggleQ.innerText = "لديك حساب بالفعل؟";
+                toggleBtn.innerText = "تسجيل الدخول";
+            } else {
+                nameGroup.classList.add('hidden');
+                modalTitle.innerText = "تسجيل الدخول";
+                submitBtn.innerText = "تسجيل الدخول";
+                toggleQ.innerText = "ليس لديك حساب؟";
+                toggleBtn.innerText = "إنشاء حساب جديد";
+            }
+            document.getElementById('authAlert').classList.add('hidden');
+            document.getElementById('authModal').classList.remove('hidden');
+        }
+
+        function closeAuthModal() {
+            document.getElementById('authModal').classList.add('hidden');
+        }
+
+        function toggleAuthMode() {
+            openAuthModal(authMode === 'login' ? 'register' : 'login');
+        }
+
+        function handleAuthSubmit(e) {
+            e.preventDefault();
+            const username = document.getElementById('authUsernameInput').value.trim();
+            const password = document.getElementById('authPasswordInput').value.trim();
+            const alertBox = document.getElementById('authAlert');
+
+            if (!username || !password) return;
+
+            if (authMode === 'register') {
+                const name = document.getElementById('authNameInput').value.trim();
+                const newUser = { name: name || username, username, password };
+                currentUser = newUser;
+                localStorage.setItem('bioUser', JSON.stringify(currentUser));
+                updateUserUI();
+                closeAuthModal();
+            } else {
+                // Quick Login
+                currentUser = { name: username, username, password };
+                localStorage.setItem('bioUser', JSON.stringify(currentUser));
+                updateUserUI();
+                closeAuthModal();
+            }
+        }
+
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('bioUser');
+            updateUserUI();
+        }
+
+        function updateUserUI() {
+            const userLoggedArea = document.getElementById('userLoggedArea');
+            const userGuestArea = document.getElementById('userGuestArea');
+            const userNameDisplay = document.getElementById('userNameDisplay');
+            const mobileAuthBtns = document.getElementById('mobileAuthBtns');
+            const mobileLogoutBtn = document.getElementById('mobileLogoutBtn');
+
+            if (currentUser) {
+                userLoggedArea.classList.remove('hidden');
+                userLoggedArea.classList.add('flex');
+                userGuestArea.classList.add('hidden');
+                userNameDisplay.innerText = currentUser.name;
+
+                mobileAuthBtns.classList.add('hidden');
+                mobileLogoutBtn.classList.remove('hidden');
+            } else {
+                userLoggedArea.classList.add('hidden');
+                userGuestArea.classList.remove('hidden');
+
+                mobileAuthBtns.classList.remove('hidden');
+                mobileLogoutBtn.classList.add('hidden');
+            }
+        }
+
+        // QUIZ SYSTEM LOGIC
+        function startQuiz(quizId) {
+            currentQuiz = QUIZZES_DATA[quizId];
+            if (!currentQuiz) return;
+
+            activeQuizState = {
+                quizId,
+                currentIndex: 0,
+                userAnswers: new Array(currentQuiz.questions.length).fill(null),
+                isSubmitted: false
+            };
+
+            document.getElementById('quizSelectContainer').classList.add('hidden');
+            document.getElementById('activeQuizBox').classList.remove('hidden');
+            document.getElementById('activeQuizTitle').innerText = currentQuiz.title;
+
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            const q = currentQuiz.questions[activeQuizState.currentIndex];
+            document.getElementById('questionCounter').innerText = `السؤال ${activeQuizState.currentIndex + 1} من ${currentQuiz.questions.length}`;
+            document.getElementById('questionText').innerText = q.question;
+
+            const choicesContainer = document.getElementById('choicesContainer');
+            choicesContainer.innerHTML = '';
+
+            const selectedChoice = activeQuizState.userAnswers[activeQuizState.currentIndex];
+
+            q.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.type = "button";
+                btn.className = `w-full text-right p-3.5 rounded-xl border text-sm font-semibold transition flex items-center justify-between ${
+                    selectedChoice === index 
+                        ? 'bg-bio-600/30 border-bio-500 text-white' 
+                        : 'bg-bio-950/60 border-bio-800 text-gray-300 hover:border-bio-600'
+                }`;
+
+                btn.onclick = () => selectOption(index);
+                btn.innerHTML = `
+                    <span>${opt}</span>
+                    <i class="fa-regular ${selectedChoice === index ? 'fa-circle-dot text-bio-400' : 'fa-circle text-gray-600'}"></i>
+                `;
+                choicesContainer.appendChild(btn);
+            });
+
+            document.getElementById('prevBtn').disabled = activeQuizState.currentIndex === 0;
+            const nextBtn = document.getElementById('nextBtn');
+            if (activeQuizState.currentIndex === currentQuiz.questions.length - 1) {
+                nextBtn.innerText = "إنهاء الاختبار";
+                nextBtn.onclick = finishQuiz;
+            } else {
+                nextBtn.innerText = "التالي";
+                nextBtn.onclick = () => navigateQuestion(1);
+            }
+
+            document.getElementById('explanationBox').classList.add('hidden');
+        }
+
+        function selectOption(index) {
+            activeQuizState.userAnswers[activeQuizState.currentIndex] = index;
+            renderQuestion();
+        }
+
+        function checkCurrentAnswer() {
+            const curIdx = activeQuizState.currentIndex;
+            const userAns = activeQuizState.userAnswers[curIdx];
+            const q = currentQuiz.questions[curIdx];
+
+            if (userAns === null) {
+                alert('برجاء اختيار إجابة أولاً!');
+                return;
+            }
+
+            const expBox = document.getElementById('explanationBox');
+            const expText = document.getElementById('explanationText');
+
+            expText.innerText = q.explanation;
+            expBox.classList.remove('hidden');
+        }
+
+        function navigateQuestion(step) {
+            activeQuizState.currentIndex += step;
+            renderQuestion();
+        }
+
+        function finishQuiz() {
+            let correctCount = 0;
+            currentQuiz.questions.forEach((q, idx) => {
+                if (activeQuizState.userAnswers[idx] === q.correctIndex) {
+                    correctCount++;
+                }
+            });
+
+            const scorePercentage = Math.round((correctCount / currentQuiz.questions.length) * 100);
+
+            const record = {
+                title: currentQuiz.title,
+                score: `${correctCount} / ${currentQuiz.questions.length}`,
+                percentage: `${scorePercentage}%`,
+                date: new Date().toLocaleDateString('ar-EG')
+            };
+
+            quizHistory.unshift(record);
+            localStorage.setItem('bioQuizHistory', JSON.stringify(quizHistory));
+
+            document.getElementById('activeQuizBox').classList.add('hidden');
+            document.getElementById('quizResultBox').classList.remove('hidden');
+            document.getElementById('finalScore').innerText = record.score;
+            document.getElementById('finalPercentage').innerText = record.percentage;
+
+            renderHistoryTable();
+        }
+
+        function exitQuiz() {
+            document.getElementById('activeQuizBox').classList.add('hidden');
+            document.getElementById('quizSelectContainer').classList.remove('hidden');
+        }
+
+        function closeQuizResult() {
+            document.getElementById('quizResultBox').classList.add('hidden');
+            document.getElementById('quizSelectContainer').classList.remove('hidden');
+        }
+
+        // Render Student Dashboard History Table
+        function renderHistoryTable() {
+            const tableBody = document.getElementById('quizHistoryTable');
+            if (!tableBody) return;
+            tableBody.innerHTML = '';
+
+            document.getElementById('statQuizzesTaken').innerText = quizHistory.length;
+
+            if (quizHistory.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="4" class="text-center p-6 text-gray-500">لا توجد اختبارات مسجلة بعد. ابدأ أداء الاختبارات لتتبع نتائجك!</td></tr>`;
+                document.getElementById('statAvgScore').innerText = '0%';
+                return;
+            }
+
+            let totalPercent = 0;
+            quizHistory.forEach(item => {
+                totalPercent += parseInt(item.percentage);
+                const row = document.createElement('tr');
+                row.className = "border-b border-bio-800/40 hover:bg-bio-900/30";
+                row.innerHTML = `
+                    <td class="p-3.5 font-bold text-white">${item.title}</td>
+                    <td class="p-3.5 text-bio-400 font-bold">${item.score}</td>
+                    <td class="p-3.5 text-cyanbio-500 font-bold">${item.percentage}</td>
+                    <td class="p-3.5 text-gray-400">${item.date}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+
+            const avg = Math.round(totalPercent / quizHistory.length);
+            document.getElementById('statAvgScore').innerText = `${avg}%`;
+        }
+    </script>
+</body>
+</html>
