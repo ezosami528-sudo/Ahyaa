@@ -1,4 +1,3 @@
-(
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -11,7 +10,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <script>
         tailwind.config = {
             theme: {
@@ -85,7 +83,6 @@
             transition: all 0.3s ease;
         }
 
-        /* Ensure input text is clearly visible in black */
         .input-dark-text {
             color: #000000 !important;
             background-color: #f8fafc !important;
@@ -134,7 +131,10 @@
                         <i class="fa-solid fa-circle-play"></i> قسم الشرح
                     </button>
                     <button onclick="switchTab('quizzes')" id="nav-quizzes" class="nav-btn px-4 py-2 rounded-xl text-sm font-bold text-gray-300 hover:text-white hover:bg-bio-800/30 transition flex items-center gap-2">
-                        <i class="fa-solid fa-pen-to-square"></i> قسم الحل والتدريب
+                        <i class="fa-solid fa-pen-to-square"></i> قسم الحل
+                    </button>
+                    <button onclick="switchTab('hormones')" id="nav-hormones" class="nav-btn px-4 py-2 rounded-xl text-sm font-bold text-gray-300 hover:text-white hover:bg-bio-800/30 transition flex items-center gap-2">
+                        <i class="fa-solid fa-vial"></i> كروت الهرمونات
                     </button>
                     <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-btn px-4 py-2 rounded-xl text-sm font-bold text-gray-300 hover:text-white hover:bg-bio-800/30 transition flex items-center gap-2">
                         <i class="fa-solid fa-chart-line"></i> لوحة التحكم
@@ -182,6 +182,9 @@
             <button onclick="switchTab('quizzes'); toggleMobileMenu()" class="w-full text-right px-4 py-3 rounded-xl font-bold text-gray-200 hover:bg-bio-900/30 flex items-center gap-3">
                 <i class="fa-solid fa-pen-to-square"></i> بنك الأسئلة والتدريب
             </button>
+            <button onclick="switchTab('hormones'); toggleMobileMenu()" class="w-full text-right px-4 py-3 rounded-xl font-bold text-gray-200 hover:bg-bio-900/30 flex items-center gap-3">
+                <i class="fa-solid fa-vial"></i> كروت الهرمونات
+            </button>
             <button onclick="switchTab('dashboard'); toggleMobileMenu()" class="w-full text-right px-4 py-3 rounded-xl font-bold text-gray-200 hover:bg-bio-900/30 flex items-center gap-3">
                 <i class="fa-solid fa-chart-line"></i> إحصائيات الطالب
             </button>
@@ -222,6 +225,9 @@
                             </button>
                             <button onclick="switchTab('quizzes')" class="px-6 py-3.5 rounded-2xl bg-bio-950/80 hover:bg-bio-900 text-bio-300 border border-bio-600/40 font-bold transition flex items-center gap-2">
                                 <i class="fa-solid fa-vial"></i> اختبر نفسك
+                            </button>
+                            <button onclick="switchTab('hormones')" class="px-6 py-3.5 rounded-2xl bg-amber-500/20 text-amber-300 hover:bg-amber-500/30 font-bold text-sm border border-amber-500/30 transition flex items-center gap-2">
+                                <i class="fa-solid fa-dna"></i> تصفح كروت الهرمونات
                             </button>
                         </div>
                     </div>
@@ -280,7 +286,7 @@
                     </div>
 
                     <!-- Chapter 2 -->
-                    <div onclick="switchTab('lectures')" class="glass-card rounded-2xl p-6 border border-bio-800/50 glow-box-hover cursor-pointer group">
+                    <div onclick="switchTab('hormones')" class="glass-card rounded-2xl p-6 border border-bio-800/50 glow-box-hover cursor-pointer group">
                         <div class="w-12 h-12 rounded-xl bg-cyanbio-500/20 text-cyanbio-500 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition">
                             <i class="fa-solid fa-vial-circle-check"></i>
                         </div>
@@ -459,7 +465,273 @@
         </section>
 
 
-        <!-- TAB 4: DASHBOARD SECTION -->
+        <!-- TAB 4: HORMONES CARDS SECTION -->
+        <section id="tab-hormones" class="tab-content hidden space-y-8">
+            <div class="border-b border-bio-800/60 pb-6 text-center md:text-right flex flex-col md:flex-row justify-between items-center gap-4">
+                <div>
+                    <h2 class="text-3xl font-black text-white flex items-center gap-3 justify-center md:justify-start">
+                        <i class="fa-solid fa-vial-circle-check text-bio-400"></i> دليل هرمونات الأحياء - تالتة ثانوي
+                    </h2>
+                    <p class="text-sm text-gray-300 mt-1">ملخص شامل لكافة هرمونات المنهج، مكان الإفراز، الوظيفة، وأعراض الخلل</p>
+                </div>
+                <!-- Search Bar -->
+                <div class="w-full md:w-80">
+                    <input type="text" id="hormoneSearchInput" class="w-full px-4 py-2.5 text-sm rounded-xl border border-bio-600/50 bg-bio-950/80 text-white placeholder-gray-400 outline-none focus:border-bio-400 transition" placeholder="ابحث باسم الهرمون أو الغدة..." onkeyup="filterHormones()">
+                </div>
+            </div>
+
+            <!-- Hormones Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="hormonesCardsContainer">
+
+                <!-- 1. هرمون النمو -->
+                <div class="glass-card rounded-2xl overflow-hidden border-t-4 border-t-bio-400 flex flex-col justify-between hormone-card transition duration-300 hover:scale-[1.01]">
+                    <div class="bg-bio-950/60 p-4 border-b border-bio-800/40">
+                        <h2 class="text-lg font-bold text-white">هرمون النمو (GH)</h2>
+                        <span class="gland-name text-xs text-rose-300 bg-rose-950/60 border border-rose-800/40 px-2.5 py-0.5 rounded font-bold mt-1 inline-block">الفص الأمامي للغدة النخامية</span>
+                    </div>
+                    <div class="p-5 flex-grow flex flex-col gap-3">
+                        <div>
+                            <div class="text-xs font-bold text-bio-400 mb-1">الوظيفة:</div>
+                            <div class="text-xs text-gray-300 leading-relaxed">يتحكم في عمليات الأيض (خصوصاً تصنيع البروتينات) ومسؤول عن نمو الجسم وخاصة العظام.</div>
+                        </div>
+                        <div class="bg-amber-950/30 border-r-4 border-amber-500 p-2.5 rounded text-xs text-amber-200/90">
+                            <strong>الخلل:</strong> النقص في الطفولة يسبب القزمة، والزيادة في الطفولة تسبب العملقة، وزيادته في البالغين تسبب "الأكروميجالي".
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. TSH -->
+                <div class="glass-card rounded-2xl overflow-hidden border-t-4 border-t-cyanbio-500 flex flex-col justify-between hormone-card transition duration-300 hover:scale-[1.01]">
+                    <div class="bg-bio-950/60 p-4 border-b border-bio-800/40">
+                        <h2 class="text-lg font-bold text-white">هرمون TSH</h2>
+                        <span class="gland-name text-xs text-rose-300 bg-rose-950/60 border border-rose-800/40 px-2.5 py-0.5 rounded font-bold mt-1 inline-block">الفص الأمامي للغدة النخامية</span>
+                    </div>
+                    <div class="p-5 flex-grow flex flex-col gap-3">
+                        <div>
+                            <div class="text-xs font-bold text-bio-400 mb-1">الوظيفة:</div>
+                            <div class="text-xs text-gray-300 leading-relaxed">يحفز الغدة الدرقية لإفراز هرمون الثيروكسين.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. FSH & LH -->
+                <div class="glass-card rounded-2xl overflow-hidden border-t-4 border-t-emerald-400 flex flex-col justify-between hormone-card transition duration-300 hover:scale-[1.01]">
+                    <div class="bg-bio-950/60 p-4 border-b border-bio-800/40">
+                        <h2 class="text-lg font-bold text-white">هرمونا FSH و LH</h2>
+                        <span class="gland-name text-xs text-rose-300 bg-rose-950/60 border border-rose-800/40 px-2.5 py-0.5 rounded font-bold mt-1 inline-block">الفص الأمامي للغدة النخامية</span>
+                    </div>
+                    <div class="p-5 flex-grow flex flex-col gap-3">
+                        <div>
+                            <div class="text-xs font-bold text-bio-400 mb-1">الوظيفة:</div>
+                            <div class="text-xs text-gray-300 leading-relaxed">ينبهان الغدد الجنسية (المناسل) لتفرز هرموناتها وتكوين الأمشاج (حيوانات منوية وبويضات).</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. ADH -->
+                <div class="glass-card rounded-2xl overflow-hidden border-t-4 border-t-amber-400 flex flex-col justify-between hormone-card transition duration-300 hover:scale-[1.01]">
+                    <div class="bg-bio-950/60 p-4 border-b border-bio-800/40">
+                        <h2 class="text-lg font-bold text-white">الهرمون المضاد لإدرار البول (ADH)</h2>
+                        <span class="gland-name text-xs text-rose-300 bg-rose-950/60 border border-rose-800/40 px-2.5 py-0.5 rounded font-bold mt-1 inline-block">الفص الخلفي للغدة النخامية</span>
+                    </div>
+                    <div class="p-5 flex-grow flex flex-col gap-3">
+                        <div>
+                            <div class="text-xs font-bold text-bio-400 mb-1">الوظيفة:</div>
+                            <div class="text-xs text-gray-300 leading-relaxed">يقلل كمية البول عن طريق إعادة امتصاص الماء في الكليتين، ويرفع ضغط الدم.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. الأوكسيتوسين -->
+                <div class="glass-card rounded-2xl overflow-hidden border-t-4 border-t-pink-400 flex flex-col justify-between hormone-card transition duration-300 hover:scale-[1.01]">
+                    <div class="bg-bio-950/60 p-4 border-b border-bio-800/40">
+                        <h2 class="text-lg font-bold text-white">هرمون الأوكسيتوسين</h2>
+                        <span class="gland-name text-xs text-rose-300 bg-rose-950/60 border border-rose-800/40 px-2.5 py-0.5 rounded font-bold mt-1 inline-block">الفص الخلفي للغدة النخامية</span>
+                    </div>
+                    <div class="p-5 flex-grow flex flex-col gap-3">
+                        <div>
+                            <div class="text-xs font-bold text-bio-400 mb-1">الوظيفة:</div>
+                            <div class="text-xs text-gray-300 leading-relaxed">له دور في عملية الولادة (تنبيه تقلصات الرحم) وإفراز الحليب من الغدد الثديية استجابة للرضاعة.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6. الثيروكسين -->
+                <div class="glass-card rounded-2xl overflow-hidden border-t-4 border-t-teal-400 flex flex-col justify-between hormone-card transition duration-300 hover:scale-[1.01]">
+                    <div class="bg-bio-950/60 p-4 border-b border-bio-800/40">
+                        <h2 class="text-lg font-bold text-white">هرمون الثيروكسين</h2>
+                        <span class="gland-name text-xs text-rose-300 bg-rose-950/60 border border-rose-800/40 px-2.5 py-0.5 rounded font-bold mt-1 inline-block">الغدة الدرقية</span>
+                    </div>
+                    <div class="p-5 flex-grow flex flex-col gap-3">
+                        <div>
+                            <div class="text-xs font-bold text-bio-400 mb-1">الوظيفة:</div>
+                            <div class="text-xs text-gray-300 leading-relaxed">يؤثر على معدل الأيض الأساسي، يحفز امتصاص السكريات الأحادية، ويحافظ على سلامة الجلد والشعر.</div>
+                        </div>
+                        <div class="bg-amber-950/30 border-r-4 border-amber-500 p-2.5 rounded text-xs text-amber-200/90">
+                            <strong>الخلل:</strong> النقص يسبب "الجويتر البسيط" أو الميكسيديما (في البالغين) والقماهة (في الأطفال). والزيادة تسبب الجويتر الجحوظي.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 7. الكالسيتونين -->
+                <div class="glass-card rounded-2xl overflow-hidden border-t-4 border-t-teal-500 flex flex-col justify-between hormone-card transition duration-300 hover:scale-[1.01]">
+                    <div class="bg-bio-950/60 p-4 border-b border-bio-800/40">
+                        <h2 class="text-lg font-bold text-white">هرمون الكالسيتونين</h2>
+                        <span class="gland-name text-xs text-rose-300 bg-rose-950/60 border border-rose-800/40 px-2.5 py-0.5 rounded font-bold mt-1 inline-block">الغدة الدرقية</span>
+                    </div>
+                    <div class="p-5 flex-grow flex flex-col gap-3">
+                        <div>
+                            <div class="text-xs font-bold text-bio-400 mb-1">الوظيفة:</div>
+                            <div class="text-xs text-gray-300 leading-relaxed">يعمل على خفض نسبة الكالسيوم في الدم عن طريق منع سحبه من العظام وترسيبه فيها.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 8. الباراثورمون -->
+                <div class="glass-card rounded-2xl overflow-hidden border-t-4 border-t-bio-500 flex flex-col justify-between hormone-card transition duration-300 hover:scale-[1.01]">
+                    <div class="bg-bio-950/60 p-4 border-b border-bio-800/40">
+                        <h2 class="text-lg font-bold text-white">هرمون الباراثورمون</h2>
+                        <span class="gland-name text-xs text-rose-300 bg-rose-950/60 border border-rose-800/40 px-2.5 py-0.5 rounded font-bold mt-1 inline-block">الغدد جارات الدرقية</span>
+                    </div>
+                    <div class="p-5 flex-grow flex flex-col gap-3">
+                        <div>
+                            <div class="text-xs font-bold text-bio-400 mb-1">الوظيفة:</div>
+                            <div class="text-xs text-gray-300 leading-relaxed">يعمل على رفع نسبة الكالسيوم في الدم عن طريق سحبه من العظام.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 9. الألدوستيرون -->
+                <div class="glass-card rounded-2xl overflow-hidden border-t-4 border-t-orange-400 flex flex-col justify-between hormone-card transition duration-300 hover:scale-[1.01]">
+                    <div class="bg-bio-950/60 p-4 border-b border-bio-800/40">
+                        <h2 class="text-lg font-bold text-white">هرمون الألدوستيرون</h2>
+                        <span class="gland-name text-xs text-rose-300 bg-rose-950/60 border border-rose-800/40 px-2.5 py-0.5 rounded font-bold mt-1 inline-block">قشرة الغدة الكظرية</span>
+                    </div>
+                    <div class="p-5 flex-grow flex flex-col gap-3">
+                        <div>
+                            <div class="text-xs font-bold text-bio-400 mb-1">الوظيفة:</div>
+                            <div class="text-xs text-gray-300 leading-relaxed">يحافظ على توازن أملاح الجسم بإعادة امتصاص الصوديوم والتخلص من البوتاسيوم الزائد عبر الكليتين.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 10. الكورتيزون والكورتيكوستيرون -->
+                <div class="glass-card rounded-2xl overflow-hidden border-t-4 border-t-amber-500 flex flex-col justify-between hormone-card transition duration-300 hover:scale-[1.01]">
+                    <div class="bg-bio-950/60 p-4 border-b border-bio-800/40">
+                        <h2 class="text-lg font-bold text-white">الكورتيزون والكورتيكوستيرون</h2>
+                        <span class="gland-name text-xs text-rose-300 bg-rose-950/60 border border-rose-800/40 px-2.5 py-0.5 rounded font-bold mt-1 inline-block">قشرة الغدة الكظرية</span>
+                    </div>
+                    <div class="p-5 flex-grow flex flex-col gap-3">
+                        <div>
+                            <div class="text-xs font-bold text-bio-400 mb-1">الوظيفة:</div>
+                            <div class="text-xs text-gray-300 leading-relaxed">ينظمان أيض الكربوهيدرات (السكريات والنشويات) في الجسم.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 11. الأدرينالين والنورأدرينالين -->
+                <div class="glass-card rounded-2xl overflow-hidden border-t-4 border-t-red-500 flex flex-col justify-between hormone-card transition duration-300 hover:scale-[1.01]">
+                    <div class="bg-bio-950/60 p-4 border-b border-bio-800/40">
+                        <h2 class="text-lg font-bold text-white">الأدرينالين والنورأدرينالين</h2>
+                        <span class="gland-name text-xs text-rose-300 bg-rose-950/60 border border-rose-800/40 px-2.5 py-0.5 rounded font-bold mt-1 inline-block">نخاع الغدة الكظرية</span>
+                    </div>
+                    <div class="p-5 flex-grow flex flex-col gap-3">
+                        <div>
+                            <div class="text-xs font-bold text-bio-400 mb-1">الوظيفة:</div>
+                            <div class="text-xs text-gray-300 leading-relaxed">يستجيب الجسم بهما لحالات الطوارئ (الخوف والتوتر والمجهود الشاق) برفع ضربات القلب وضغط الدم.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 12. الأنسولين -->
+                <div class="glass-card rounded-2xl overflow-hidden border-t-4 border-t-blue-400 flex flex-col justify-between hormone-card transition duration-300 hover:scale-[1.01]">
+                    <div class="bg-bio-950/60 p-4 border-b border-bio-800/40">
+                        <h2 class="text-lg font-bold text-white">هرمون الأنسولين</h2>
+                        <span class="gland-name text-xs text-rose-300 bg-rose-950/60 border border-rose-800/40 px-2.5 py-0.5 rounded font-bold mt-1 inline-block">خلايا بيتا - البنكرياس</span>
+                    </div>
+                    <div class="p-5 flex-grow flex flex-col gap-3">
+                        <div>
+                            <div class="text-xs font-bold text-bio-400 mb-1">الوظيفة:</div>
+                            <div class="text-xs text-gray-300 leading-relaxed">يخفض نسبة السكر في الدم بتخزين الجلوكوز الزائد كـ جليكوجين أو دهون.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 13. الجلوكاجون -->
+                <div class="glass-card rounded-2xl overflow-hidden border-t-4 border-t-blue-500 flex flex-col justify-between hormone-card transition duration-300 hover:scale-[1.01]">
+                    <div class="bg-bio-950/60 p-4 border-b border-bio-800/40">
+                        <h2 class="text-lg font-bold text-white">هرمون الجلوكاجون</h2>
+                        <span class="gland-name text-xs text-rose-300 bg-rose-950/60 border border-rose-800/40 px-2.5 py-0.5 rounded font-bold mt-1 inline-block">خلايا ألفا - البنكرياس</span>
+                    </div>
+                    <div class="p-5 flex-grow flex flex-col gap-3">
+                        <div>
+                            <div class="text-xs font-bold text-bio-400 mb-1">الوظيفة:</div>
+                            <div class="text-xs text-gray-300 leading-relaxed">يرفع نسبة السكر في الدم بتفكيك الجليكوجين المخزن في الكبد إلى جلوكوز.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 14. التستوستيرون -->
+                <div class="glass-card rounded-2xl overflow-hidden border-t-4 border-t-purple-400 flex flex-col justify-between hormone-card transition duration-300 hover:scale-[1.01]">
+                    <div class="bg-bio-950/60 p-4 border-b border-bio-800/40">
+                        <h2 class="text-lg font-bold text-white">التستوستيرون والأندروجينات</h2>
+                        <span class="gland-name text-xs text-rose-300 bg-rose-950/60 border border-rose-800/40 px-2.5 py-0.5 rounded font-bold mt-1 inline-block">الخصية (الذكور)</span>
+                    </div>
+                    <div class="p-5 flex-grow flex flex-col gap-3">
+                        <div>
+                            <div class="text-xs font-bold text-bio-400 mb-1">الوظيفة:</div>
+                            <div class="text-xs text-gray-300 leading-relaxed">مسؤول عن ظهور الصفات الجنسية الثانوية الذكرية ونضج الأعضاء التناسلية.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 15. الإستروجين -->
+                <div class="glass-card rounded-2xl overflow-hidden border-t-4 border-t-pink-500 flex flex-col justify-between hormone-card transition duration-300 hover:scale-[1.01]">
+                    <div class="bg-bio-950/60 p-4 border-b border-bio-800/40">
+                        <h2 class="text-lg font-bold text-white">هرمون الإستروجين</h2>
+                        <span class="gland-name text-xs text-rose-300 bg-rose-950/60 border border-rose-800/40 px-2.5 py-0.5 rounded font-bold mt-1 inline-block">المبيض (الإناث)</span>
+                    </div>
+                    <div class="p-5 flex-grow flex flex-col gap-3">
+                        <div>
+                            <div class="text-xs font-bold text-bio-400 mb-1">الوظيفة:</div>
+                            <div class="text-xs text-gray-300 leading-relaxed">مسؤول عن ظهور الصفات الجنسية الثانوية الأنثوية ونمو بطانة الرحم.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 16. البروجسترون -->
+                <div class="glass-card rounded-2xl overflow-hidden border-t-4 border-t-rose-400 flex flex-col justify-between hormone-card transition duration-300 hover:scale-[1.01]">
+                    <div class="bg-bio-950/60 p-4 border-b border-bio-800/40">
+                        <h2 class="text-lg font-bold text-white">هرمون البروجسترون</h2>
+                        <span class="gland-name text-xs text-rose-300 bg-rose-950/60 border border-rose-800/40 px-2.5 py-0.5 rounded font-bold mt-1 inline-block">الجسم الأصفر والمشيمة</span>
+                    </div>
+                    <div class="p-5 flex-grow flex flex-col gap-3">
+                        <div>
+                            <div class="text-xs font-bold text-bio-400 mb-1">الوظيفة:</div>
+                            <div class="text-xs text-gray-300 leading-relaxed">يزيد الإمداد الدموي لبطانة الرحم استعداداً للحمل وتنظيمه.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 17. الريلاكسين -->
+                <div class="glass-card rounded-2xl overflow-hidden border-t-4 border-t-indigo-400 flex flex-col justify-between hormone-card transition duration-300 hover:scale-[1.01]">
+                    <div class="bg-bio-950/60 p-4 border-b border-bio-800/40">
+                        <h2 class="text-lg font-bold text-white">هرمون الريلاكسين</h2>
+                        <span class="gland-name text-xs text-rose-300 bg-rose-950/60 border border-rose-800/40 px-2.5 py-0.5 rounded font-bold mt-1 inline-block">المبيض والمشيمة والرحم</span>
+                    </div>
+                    <div class="p-5 flex-grow flex flex-col gap-3">
+                        <div>
+                            <div class="text-xs font-bold text-bio-400 mb-1">الوظيفة:</div>
+                            <div class="text-xs text-gray-300 leading-relaxed">يسبب ارتخاء الارتفاق العاني لتسهيل عملية الولادة.</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- TAB 5: DASHBOARD SECTION -->
         <section id="tab-dashboard" class="tab-content hidden space-y-8">
             <div class="border-b border-bio-800/60 pb-6">
                 <h2 class="text-3xl font-black text-white flex items-center gap-3">
@@ -549,7 +821,7 @@
 
     <!-- MODALS: AUTH & VIDEO PLAYER -->
 
-    <!-- Authentication Modal (Login / Register) -->
+    <!-- Authentication Modal -->
     <div id="authModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/70 backdrop-blur-md">
         <div class="glass-modal w-full max-w-md rounded-3xl p-8 space-y-6 relative border border-bio-500/30">
             <button onclick="closeAuthModal()" type="button" class="absolute top-5 left-5 text-gray-400 hover:text-white text-xl">
@@ -561,7 +833,6 @@
                 <p id="authModalSub" class="text-xs text-gray-400 mt-1">مرحباً بك مجدداً في منصتك التعليمية</p>
             </div>
 
-            <!-- Form -->
             <form id="authForm" onsubmit="handleAuthSubmit(event)" class="space-y-4">
                 <div id="nameFieldGroup" class="hidden space-y-1">
                     <label class="text-xs font-bold text-gray-300">الاسم بالكامل</label>
@@ -623,7 +894,7 @@
     <script>
         // Ordered YouTube Lectures Sequenced by Curriculum Lessons
         const LECTURES_DATA = [
-                        {
+            {
                 id: 'lec1',
                 chapterId: 'ch1',
                 chapterTitle: 'الباب الأول: الدعامة والحركة',
@@ -769,6 +1040,7 @@
                 activeNav.classList.add('text-bio-400', 'bg-bio-900/40', 'border', 'border-bio-500/30');
                 activeNav.classList.remove('text-gray-300');
             }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function toggleMobileMenu() {
@@ -814,6 +1086,22 @@
 
         function filterLectures(chapterKey) {
             renderLectures(chapterKey);
+        }
+
+        // Hormone Cards Filter Function
+        function filterHormones() {
+            const input = document.getElementById('hormoneSearchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('#hormonesCardsContainer .hormone-card');
+
+            cards.forEach(card => {
+                const title = card.querySelector('h2').innerText.toLowerCase();
+                const gland = card.querySelector('.gland-name').innerText.toLowerCase();
+                if (title.includes(input) || gland.includes(input)) {
+                    card.style.display = "flex";
+                } else {
+                    card.style.display = "none";
+                }
+            });
         }
 
         // Video Player Modal Control
